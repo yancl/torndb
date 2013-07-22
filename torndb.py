@@ -63,7 +63,7 @@ class Connection(object):
     """
     def __init__(self, host, database, user=None, password=None,
                  max_idle_time=7 * 3600, connect_timeout=0,
-                 time_zone="+0:00"):
+                 time_zone="+0:00", **kwargs):
         self.host = host
         self.database = database
         self.max_idle_time = float(max_idle_time)
@@ -71,6 +71,8 @@ class Connection(object):
         args = dict(conv=CONVERSIONS, use_unicode=True, charset="utf8",
                     db=database, init_command=('SET time_zone = "%s"' % time_zone),
                     connect_timeout=connect_timeout, sql_mode="TRADITIONAL")
+        args.update(kwargs)
+        
         if user is not None:
             args["user"] = user
         if password is not None:
