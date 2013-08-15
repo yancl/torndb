@@ -202,6 +202,26 @@ class Connection(object):
         finally:
             cursor.close()
 
+    def trx_execute(self, querys):
+        """
+            execute batch sqls in transaction mode
+
+        """
+        self._db.begin()
+        cursor = self._cursor()
+        status = True
+        try:
+            for (sql, kwargs) in querys:
+                cursor.execute(sql, **kwargs)
+            self._db.commit()
+        except OperationalError, e:
+            self._db.rollback()
+            status = False
+            raise Exception(e.args[0], e.args[1])
+        finally:
+            cursor.close()
+        return status
+        
     update = execute_rowcount
     updatemany = executemany_rowcount
 
