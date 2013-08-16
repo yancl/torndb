@@ -207,10 +207,11 @@ class Connection(object):
             execute batch sqls in transaction mode
 
         """
-        self._db.begin()
+        #self._db.begin()
         cursor = self._cursor()
         status = True
         try:
+            cursor.execute('BEGIN;')
             for (sql, kwargs) in querys:
                 cursor.execute(sql, **kwargs)
             self._db.commit()
