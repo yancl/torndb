@@ -212,7 +212,7 @@ class Connection(object):
         status = True
         try:
             for (sql, kwargs) in querys:
-                cursor.execute(sql, **kwargs)
+                cursor.execute(sql, kwargs)
             self._db.commit()
         except OperationalError, e:
             self._db.rollback()
